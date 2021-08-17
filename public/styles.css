@@ -1,0 +1,150 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  background: #eee;
+  background-image: url("https://www.transparenttextures.com/patterns/shattered-dark.png");
+  padding: 0 16px;
+}
+
+header {
+  background-color: #00A36C;
+  margin: auto -16px;
+  padding: 16px 32px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  color: #fff;
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+}
+
+footer {
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+}
+
+footer p {
+  color: #ccc;
+}
+
+label {
+  display: block;
+}
+
+#initialAdd {
+  background-color: #00A36C;
+  border: none;
+  border-radius: 15px;
+  color: #fff;
+  display: block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+  padding: 1rem 5rem;
+  position: relative;
+  margin: 2rem auto;
+}
+
+.plant-info {
+  padding-left: 35px;
+  padding-right: 35px;
+}
+
+.plant-info-label {
+  color: #00A36C;
+}
+
+.row {
+  padding: 0.5rem 0;
+}
+
+.plant-img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  left: 50%;
+  border: 8px solid #00A36C;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+}
+
+.plant {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  font-family: "Montserrat", sans-serif;
+  padding: 10px;
+  width: 400px;
+  margin: 16px;
+  float: left;
+}
+.plant h1 {
+  font-size: 2.5em;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.plant p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  margin-left: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.plant button {
+  background-color: white;
+  position: relative;
+  float: right;
+  margin-right: 10px;
+  color: #00A36C;
+  border: none;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  outline: none;
+}
+
+form.create-plant {
+  font-family: "Montserrat", sans-serif;
+  position: relative;
+  width: 550px;
+  margin: 30px auto 20px auto;
+  background: #d1d1d1;
+  padding: 20px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+form.create-plant input,
+form.create-plant textarea {
+  width: auto;
+  border: none;
+  padding: 8px;
+  margin: 10px;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+}
+form.create-plant button {
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  background: #00A36C;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+}
