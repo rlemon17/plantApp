@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
+import SaveIcon from '@material-ui/icons/Save';
+import axios from 'axios';
 
 const CreateArea = (props) => {
-  const [plant, setPlant] = useState({
-    name: "",
-    lastWatered: "",
-    frequency: 0,
-    lastFertilized: "",
-    imgUrl: ""
-  });
 
+  const [plant, setPlant] = useState({
+    name: props.startingPlant.name,
+    lastWatered: props.startingPlant.lastWatered,
+    frequency: props.startingPlant.frequency,
+    lastFertilized: props.startingPlant.lastFertilized,
+    imgUrl: props.startingPlant.imgUrl
+  });
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -24,7 +27,14 @@ const CreateArea = (props) => {
   }
 
   const submitPlant = (event) => {
+    // Call onAdd method from App.jsx
     props.onAdd(plant);
+
+    // Add to the database
+    axios.post('http://localhost:3000/plants/add', plant)
+      .then(res => console.log(res.data));
+
+    // Reset form back to empty
     setPlant({
       name: "",
       lastWatered: "",
@@ -32,6 +42,8 @@ const CreateArea = (props) => {
       lastFertilized: "",
       imgUrl: ""
     });
+
+    // Prevent refreshing
     event.preventDefault();
   }
 
@@ -105,7 +117,7 @@ const CreateArea = (props) => {
         </div>
         <Zoom in={true}>
           <Fab onClick={submitPlant}>
-            <AddCircleIcon />
+            {props.updateMode ? <SaveIcon /> : <AddCircleIcon />}
           </Fab>
         </Zoom>  
       </form>
