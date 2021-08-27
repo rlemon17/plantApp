@@ -7,7 +7,7 @@ html {
   font-family: "Montserrat", sans-serif;
 }
 body {
-  background: #eee;
+  background: rgb(255, 255, 255);
   background-image: url("https://www.transparenttextures.com/patterns/shattered-dark.png");
   padding: 0 16px;
 }
@@ -54,6 +54,28 @@ label {
   padding: 1rem 5rem;
   position: relative;
   margin: 2rem auto;
+}
+
+#initialAdd:hover {
+  background-color: #fff;
+  color: #00A36C;
+}
+
+#undo-btn {
+  background-color: #00A36C;
+  border: none;
+  border-radius: 15px;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  padding: 1rem;
+  position: fixed;
+  bottom: 1%;
+  right: 1%;
+}
+
+#undo-btn:hover {
+  background-color: #fff;
+  color: #00A36C;
 }
 
 .action.plant {
@@ -138,6 +160,15 @@ form.create-plant button.cancel:hover {
   height: 36px;
   cursor: pointer;
   outline: none;
+}
+
+.action.plant button {
+  background-color: #CDFED3;
+}
+
+.plant button:hover {
+  background-color: #00A36C;
+  color: white;
 }
 
 form.create-plant {

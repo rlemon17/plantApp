@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Plant from "./Plant";
 import CreateArea from "./CreateArea";
+import UndoBtn from "./UndoBtn";
 import axios from 'axios';
 
 const App = () => {
@@ -29,9 +30,12 @@ const App = () => {
       })
       .catch(err => console.log(err));
 
+  // Various states to determine which functionality to use
   const [shouldAdd, setShouldAdd] = useState(false);
-
   const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [shouldUndo, setShouldUndo] = useState(false);
+
+  // Placeholder plant sent to CreateArea component
   const [plantToUpdate, setPlantToUpdate] = useState({
     name: "",
     lastWatered: "",
@@ -40,17 +44,31 @@ const App = () => {
     imgUrl: ""
   });
 
+  // Backup plant to undo a recent delete
+  const [backup, setBackup] = useState({
+    name: "",
+    lastWatered: "",
+    frequency: 0,
+    lastFertilized: "",
+    imgUrl: ""
+  });
+
+  // Click event to open CreateArea component
   const handleClick = () => {
     setShouldAdd(true);
     setShouldUpdate(false);
   }
 
-  const addPlant = (newPlant) => {
+  // Adds a plant
+  const addPlant = () => {
+    // Post reqest already made, just update state
     axios.get('http://localhost:3000/plants')
       .then(res => {
         setPlants(res.data);
       })
       .catch(err => console.log(err));
+    
+    //Reset all variables
     setShouldAdd(false);
     setShouldUpdate(false);
     setPlantToUpdate({
@@ -62,14 +80,52 @@ const App = () => {
     });
   }
  
-
+  // Deletes a plant
   const deletePlant = (id) => {
+
+    // First save a copy
+    axios.get('http://localhost:3000/plants/'+id)
+      .then(res => {
+        setBackup({
+          name: res.data.name,
+          lastWatered: res.data.lastWatered,
+          frequency: res.data.frequency,
+          lastFertilized: res.data.lastFertilized,
+          imgUrl: res.data.imgUrl
+        });
+      })
+      .catch(err => console.log('Error ' + err));
+
+    // Now delete the plant from the database, show undo button
     axios.delete('http://localhost:3000/plants/'+id)
 
     setPlants(prev => {
       return prev.filter((item) => {
         return item._id !== id;
       });
+    });
+
+    setShouldUndo(true);
+  }
+
+  // Function to undo last delete
+  const undoDelete = () => {
+
+    // Post request using the backup plant
+    axios.post('http://localhost:3000/plants/add', backup)
+      .then(res => console.log(res.data))
+      
+    // Call add function
+    addPlant();
+
+    // Reset undo states
+    setShouldUndo(false);
+    setBackup({
+      name: "",
+      lastWatered: "",
+      frequency: 0,
+      lastFertilized: "",
+      imgUrl: ""
     });
   }
 
@@ -83,6 +139,7 @@ const App = () => {
     }
   }
 
+  // Handles cancel event and resets all states
   const onCancel = () => {
     setShouldAdd(false);
     setShouldUpdate(false);
@@ -95,6 +152,7 @@ const App = () => {
     });
   }
 
+  // Handles update event by fetching data of plant requested and showing CreateArea component in update mode
   const queueUpdate = (id) => {
     setShouldAdd(false);
 
@@ -145,6 +203,7 @@ const App = () => {
       })}
       
       <Footer />
+      {shouldUndo && <UndoBtn onUndo={undoDelete}/>}
     </div>
   );
 }

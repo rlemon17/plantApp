@@ -53,6 +53,7 @@ const Plant = (props) => {
       </button>
       <button>
         <EditIcon onClick={() => {
+          window.scrollTo(0, 0);
           props.onUpdate(props.id);
           props.onDelete(props.id);
         }}/>

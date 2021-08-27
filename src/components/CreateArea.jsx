@@ -14,6 +14,14 @@ const CreateArea = (props) => {
     lastFertilized: props.startingPlant.lastFertilized,
     imgUrl: props.startingPlant.imgUrl
   });
+
+  const backupPlant = {
+    name: props.startingPlant.name,
+    lastWatered: props.startingPlant.lastWatered,
+    frequency: props.startingPlant.frequency,
+    lastFertilized: props.startingPlant.lastFertilized,
+    imgUrl: props.startingPlant.imgUrl
+  };
   
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,9 +34,30 @@ const CreateArea = (props) => {
     });
   }
 
+  const cancelEdit = (event) => {
+
+    props.onAdd();
+
+    // Add to the database
+    axios.post('http://localhost:3000/plants/add', backupPlant)
+      .then(res => console.log(res.data));
+
+    // Reset form back to empty
+    setPlant({
+      name: "",
+      lastWatered: "",
+      frequency: "",
+      lastFertilized: "",
+      imgUrl: ""
+    });
+
+    // Prevent refreshing
+    event.preventDefault();
+  }
+
   const submitPlant = (event) => {
     // Call onAdd method from App.jsx
-    props.onAdd(plant);
+    props.onAdd();
 
     // Add to the database
     axios.post('http://localhost:3000/plants/add', plant)
@@ -125,7 +154,7 @@ const CreateArea = (props) => {
             {props.updateMode ? <SaveIcon /> : <AddCircleIcon />}
           </Fab>
         </Zoom>
-        <button className="btn cancel" onClick={props.updateMode ? submitPlant: cancelPlant}>
+        <button className="btn cancel" onClick={props.updateMode ? cancelEdit: cancelPlant}>
           Cancel
         </button>
       </form>
