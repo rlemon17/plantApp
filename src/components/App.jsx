@@ -11,7 +11,21 @@ const App = () => {
   // Update from database
   axios.get('http://localhost:3000/plants')
       .then(res => {
-        setPlants(res.data);
+        // Sort by watering date
+        setPlants(res.data.sort((a, b) => {
+          const msPerDay = 1000*60*60*24;
+
+          let dateA = new Date(a.lastWatered);
+          let dateB = new Date(b.lastWatered);
+
+          let freqA = a.frequency*msPerDay;
+          let freqB = b.frequency*msPerDay;
+
+          let nextA = dateA.getTime() + freqA;
+          let nextB = dateB.getTime() + freqB
+
+          return nextA-nextB;
+        }));
       })
       .catch(err => console.log(err));
 
@@ -59,24 +73,51 @@ const App = () => {
     });
   }
 
+  // Function to help format the date string
+  const zeroFormat = (num) => {
+    if (num > 9) {
+      return `${num}`;
+    }
+    else {
+      return `0${num}`;
+    }
+  }
+
+  const onCancel = () => {
+    setShouldAdd(false);
+    setShouldUpdate(false);
+    setPlantToUpdate({
+      name: "",
+      lastWatered: "",
+      frequency: 0,
+      lastFertilized: "",
+      imgUrl: ""
+    });
+  }
+
   const queueUpdate = (id) => {
     setShouldAdd(false);
 
-
     axios.get('http://localhost:3000/plants/'+id)
       .then(foundPlant => {
+
+        // Need to convert dates to yyyy-mm-dd to show up properly in CreateArea component
+        let waterDate = new Date(foundPlant.data.lastWatered);
+        let waterString = `${waterDate.getUTCFullYear()}-${zeroFormat(waterDate.getUTCMonth()+1)}-${zeroFormat(waterDate.getUTCDate())}`;
+
+        let fertDate = new Date(foundPlant.data.lastFertilized);
+        let fertString = `${fertDate.getUTCFullYear()}-${zeroFormat(fertDate.getUTCMonth()+1)}-${zeroFormat(fertDate.getUTCDate())}`;
+
         setPlantToUpdate({
           name: foundPlant.data.name,
-          lastWatered: foundPlant.data.lastWatered,
+          lastWatered: waterString,
           frequency: foundPlant.data.frequency,
-          lastFertilized: foundPlant.data.lastFertilized,
+          lastFertilized: fertString,
           imgUrl: foundPlant.data.imgUrl
         });
         setShouldUpdate(true);
       })
       .catch(err => console.log(err));
-    
-    
   }
 
   return (
@@ -84,7 +125,7 @@ const App = () => {
       <Header />
 
       <div>
-        {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} /> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
+        {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} /> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
       </div>
 
       {plants.map((plant, index) => {

@@ -60,6 +60,22 @@ label {
   background-color: #CDFED3;
 }
 
+form.create-plant button.cancel {
+  height: auto;
+  width: auto;
+  padding: 0.35rem 1rem;
+  border-radius: 10%;
+  float: right;
+  margin-right: 10px;
+  position: absolute;
+  right: 70px;
+  bottom: -18px;
+}
+
+form.create-plant button.cancel:hover {
+  background:#fff;
+}
+
 .root-div {
   padding-bottom: 60px;
 }

@@ -47,6 +47,11 @@ const CreateArea = (props) => {
     event.preventDefault();
   }
 
+  const cancelPlant = (event) => {
+    props.onCancel();
+    event.preventDefault();
+  }
+
   return (
     <div>
       <form className="create-plant">
@@ -119,7 +124,10 @@ const CreateArea = (props) => {
           <Fab onClick={submitPlant}>
             {props.updateMode ? <SaveIcon /> : <AddCircleIcon />}
           </Fab>
-        </Zoom>  
+        </Zoom>
+        <button className="btn cancel" onClick={props.updateMode ? submitPlant: cancelPlant}>
+          Cancel
+        </button>
       </form>
     </div>
   );
