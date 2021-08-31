@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 // Connect other routes
+const userRouter = require('./routes/user.route');
 const plantRouter = require('./routes/plant.route');
 
 require('dotenv').config();
@@ -16,8 +17,9 @@ const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
 
 //Connect other routes
+app.use('/users', userRouter);
 app.use('/plants', plantRouter);
 
-app.get("/", (req, res) => res.send("Testing"));
+app.get("/", (req, res) => res.send("test"));
 
 app.listen(3000, () => console.log("Started on Port 3000"));

@@ -3,6 +3,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
 import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 
 const CreateArea = (props) => {
@@ -78,6 +79,12 @@ const CreateArea = (props) => {
 
   const cancelPlant = (event) => {
     props.onCancel();
+    event.preventDefault();
+  }
+
+  const deletePlant = (event) => {
+    props.onAdd();
+    props.onDelete();
     event.preventDefault();
   }
 
@@ -157,6 +164,7 @@ const CreateArea = (props) => {
         <button className="btn cancel" onClick={props.updateMode ? cancelEdit: cancelPlant}>
           Cancel
         </button>
+        {props.updateMode && <button className="delete" onClick={deletePlant}><DeleteIcon /></button>}
       </form>
     </div>
   );

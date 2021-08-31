@@ -1,0 +1,189 @@
+//jshint esversion:6
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const _ = require("lodash");
+
+const app = express();
+
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
+
+//Connect to MongoDB
+
+// Old one that used local DB:
+// mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connect("mongodb+srv://admin-lemon:165532@cluster0.yytb4.mongodb.net/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true});
+
+//Make a Schema for the objects
+const itemSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  }
+});
+
+//Make a Model for the Schema (models are capitalized)
+const Item = mongoose.model("Item", itemSchema);
+
+//Create documents for Model
+const item1 = new Item({
+  name: "Productive Sprint"
+});
+
+const item2 = new Item({
+  name: "Work out"
+});
+
+const item3 = new Item({
+  name: "Feed Meelo"
+});
+
+const defaultItems = [item1, item2, item3];
+
+// New stuff for adding dynamic lists
+const listSchema = new mongoose.Schema({
+  name: String,
+  items: [itemSchema]
+});
+
+const List = mongoose.model("List", listSchema);
+
+app.get("/", function(req, res) {
+
+  Item.find((err, results) => {
+
+    // Check if empty, so only runs once
+    if (results.length === 0) {
+
+      //Insert into the collection by referring to the model
+      Item.insertMany(defaultItems, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      res.redirect("/");
+    }
+    else {
+      res.render("list", {listTitle: "Today", newListItems: results});
+    }
+    
+  });
+
+});
+
+app.post("/", function(req, res){
+
+  const listName = req.body.list;
+
+  const newItem = new Item({
+    name: req.body.newItem
+  });
+
+  // Check if in the default list
+  if (listName === "Today") {
+    newItem.save();
+
+    res.redirect("/"); 
+  }
+
+  // Otherwise, its a custom list, so search for it
+  else {
+    List.findOne({name: listName}, (err, foundList) => {
+      if (!err) {
+        //Append to the array of the Item object
+        foundList.items.push(newItem);
+        //Save to update in the DB
+        foundList.save();
+        //Redirect to correct list
+        res.redirect(`/${listName}`);
+      }
+    })
+  }
+
+
+});
+
+app.post("/delete", function(req, res){
+  const checkedId = req.body.checkbox;
+  const listName = req.body.listName;
+
+  // Check if default list or not
+  if (listName === "Today") {
+
+    // Just find id and remove
+    Item.findByIdAndRemove(checkedId, (err) => {
+      if (!err) {
+        console.log("successfully deleted");
+        res.redirect("/");
+      }
+    }); 
+  }
+
+  // Otherwise, need to tap into the array and delete element from it
+  else {
+    List.findOneAndUpdate(
+      {name: listName},                   // Filter condition (query)
+      {$pull: {items: {_id: checkedId}}}, // What we want to update
+      (err, result) => {                  // Callback function
+        if (!err) {
+          res.redirect(`/${listName}`);
+        }
+      }
+    );
+  }
+
+});
+
+app.get("/:customList", (req, res) => {
+ const customName = _.capitalize(req.params.customList);
+
+ List.findOne({name: customName}, (err, result) => {
+  // If there isn't an error 
+  if (!err) {
+
+    // If result doesn't exist
+     if (!result) {
+
+      // Create new list
+      const list = new List({
+        name: customName,
+        items: defaultItems
+      });
+
+      list.save();
+
+      // Redirect to refresh
+      res.redirect(`/${customName}`);
+     }
+     else {
+
+       //Show existing list
+       res.render("list", {
+         listTitle: result.name,
+         newListItems: result.items
+       });
+     }
+   }
+ });
+
+
+});
+
+app.get("/about", function(req, res){
+  res.render("about");
+});
+
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, function() {
+  console.log("Server started on port 3000");
+});

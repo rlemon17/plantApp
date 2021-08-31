@@ -78,6 +78,10 @@ label {
   color: #00A36C;
 }
 
+.edit-btn {
+  border-radius: 50%;
+}
+
 .action.plant {
   background-color: #CDFED3;
 }
@@ -160,6 +164,16 @@ form.create-plant button.cancel:hover {
   height: 36px;
   cursor: pointer;
   outline: none;
+}
+
+form.create-plant button.delete {
+  margin-right: 175px;
+}
+
+form.create-plant button.delete:hover {
+  background-color: rgb(255, 0, 0);
+  color: #fff;
+  margin-right: 175px;
 }
 
 .action.plant button {

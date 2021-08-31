@@ -3,11 +3,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 const Plant = (props) => {
-  const handleClick = () => {
-    props.onDelete(props.id);
-  }
 
   const msPerDay = 1000*60*60*24;
+  const msPerMin = 1000*60; // Test out at 5pm 
 
   const lastWatered = new Date(props.lastWatered);
   const lastFertilized = new Date(props.lastFertilized);
@@ -15,7 +13,9 @@ const Plant = (props) => {
 
   const nextDate = new Date(lastWatered.getTime() + frequencyMs);
 
-  const todaysDate = new Date();
+  let todaysDate = new Date();
+  const offset = todaysDate.getTimezoneOffset()*msPerMin;
+  todaysDate = new Date(todaysDate.getTime()-offset);
 
   const daysList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -48,10 +48,8 @@ const Plant = (props) => {
           <div className="col-sm">{daysList[lastFertilized.getUTCDay()]+", "+(monthList[lastFertilized.getUTCMonth()])+" "+(lastFertilized.getUTCDate())}</div>
         </div>
       </div>
-      <button onClick={handleClick}>
-        <DeleteIcon />
-      </button>
-      <button>
+
+      <button className="edit-btn">
         <EditIcon onClick={() => {
           window.scrollTo(0, 0);
           props.onUpdate(props.id);

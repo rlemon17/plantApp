@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from 'react-router-dom';
 import Header from "./Header";
 import Footer from "./Footer";
 import Plant from "./Plant";
@@ -7,6 +8,7 @@ import UndoBtn from "./UndoBtn";
 import axios from 'axios';
 
 const App = () => {
+
   const [plants, setPlants] = useState([]);
 
   // Update from database
@@ -105,7 +107,6 @@ const App = () => {
       });
     });
 
-    setShouldUndo(true);
   }
 
   // Function to undo last delete
@@ -127,6 +128,11 @@ const App = () => {
       lastFertilized: "",
       imgUrl: ""
     });
+  }
+
+  // Function to show undo button after a delete
+  const showUndo = () => {
+    setShouldUndo(true);
   }
 
   // Function to help format the date string
@@ -183,7 +189,7 @@ const App = () => {
       <Header />
 
       <div>
-        {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} /> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
+        {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} onDelete={showUndo}/> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant} onDelete={showUndo}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
       </div>
 
       {plants.map((plant, index) => {
