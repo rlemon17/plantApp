@@ -1,6 +1,10 @@
 const router = require('express').Router();
 let User = require('../models/user.model');
 
+// Connect other routes
+const plantRouter = require('./plant.route');
+router.use('/plants', plantRouter);
+
 router.route('/').get((req, res) => {
     User.find()
         .then(users => res.json(users))

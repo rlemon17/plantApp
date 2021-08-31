@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 // Connect other routes
 const userRouter = require('./routes/user.route');
-const plantRouter = require('./routes/plant.route');
 
 require('dotenv').config();
 
@@ -18,7 +17,6 @@ mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
 
 //Connect other routes
 app.use('/users', userRouter);
-app.use('/plants', plantRouter);
 
 app.get("/", (req, res) => res.send("test"));
 

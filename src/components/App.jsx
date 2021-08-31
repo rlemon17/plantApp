@@ -9,13 +9,19 @@ import axios from 'axios';
 
 const App = () => {
 
+  const [user, setUser] = useState({
+    name: "Default",
+    plants: []
+  });
+
   const [plants, setPlants] = useState([]);
 
-  // Update from database
-  axios.get('http://localhost:3000/plants')
+  // Update from database by grabbing user
+  axios.get('http://localhost:3000/users/612ea0f975e45715709199b0')
       .then(res => {
+        setUser(res.data);
         // Sort by watering date
-        setPlants(res.data.sort((a, b) => {
+        setPlants(res.data.plants.sort((a, b) => {
           const msPerDay = 1000*60*60*24;
 
           let dateA = new Date(a.lastWatered);
@@ -64,9 +70,9 @@ const App = () => {
   // Adds a plant
   const addPlant = () => {
     // Post reqest already made, just update state
-    axios.get('http://localhost:3000/plants')
+    axios.get('http://localhost:3000/users/612ea0f975e45715709199b0')
       .then(res => {
-        setPlants(res.data);
+        setPlants(res.data.plants);
       })
       .catch(err => console.log(err));
     
@@ -192,11 +198,11 @@ const App = () => {
         {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} onDelete={showUndo}/> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant} onDelete={showUndo}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
       </div>
 
-      {plants.map((plant, index) => {
+      {plants.map((plant) => {
         return (
           <Plant
-            key={index}
-            id={plant._id}
+            key={plant.name}
+            id={plant.name}
             name={plant.name}
             lastWatered={plant.lastWatered}
             frequency={plant.frequency}
