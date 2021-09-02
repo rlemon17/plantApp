@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
 import Header from "./Header";
 import Footer from "./Footer";
 import Plant from "./Plant";
@@ -9,17 +9,17 @@ import axios from 'axios';
 
 const App = () => {
 
-  const [user, setUser] = useState({
-    name: "Default",
-    plants: []
-  });
-
   const [plants, setPlants] = useState([]);
 
-  // Update from database by grabbing user
-  axios.get('http://localhost:3000/users/612ea0f975e45715709199b0')
+  // Need a way to keep track of this
+  let userId = "612ea0f975e45715709199b0";
+  let userDNE = true;
+
+  useEffect(() => {
+    // Update from database by grabbing user
+    axios.get(`http://localhost:3000/users/${userId}`)
       .then(res => {
-        setUser(res.data);
+
         // Sort by watering date
         setPlants(res.data.plants.sort((a, b) => {
           const msPerDay = 1000*60*60*24;
@@ -37,6 +37,7 @@ const App = () => {
         }));
       })
       .catch(err => console.log(err));
+  }, [])
 
   // Various states to determine which functionality to use
   const [shouldAdd, setShouldAdd] = useState(false);
@@ -69,49 +70,82 @@ const App = () => {
 
   // Adds a plant
   const addPlant = () => {
-    // Post reqest already made, just update state
-    axios.get('http://localhost:3000/users/612ea0f975e45715709199b0')
+
+    // Post request already made, just update state
+    axios.get(`http://localhost:3000/users/${userId}`)
       .then(res => {
-        setPlants(res.data.plants);
+
+        // Sort by watering date
+        setPlants(res.data.plants.sort((a, b) => {
+          const msPerDay = 1000*60*60*24;
+
+          let dateA = new Date(a.lastWatered);
+          let dateB = new Date(b.lastWatered);
+
+          let freqA = a.frequency*msPerDay;
+          let freqB = b.frequency*msPerDay;
+
+          let nextA = dateA.getTime() + freqA;
+          let nextB = dateB.getTime() + freqB
+
+          return nextA-nextB;
+        }));
+
+        //Reset all variables
+        setShouldAdd(false);
+        setShouldUpdate(false);
+        setPlantToUpdate({
+          name: "",
+          lastWatered: "",
+          frequency: 0,
+          lastFertilized: "",
+          imgUrl: ""
+        });
       })
       .catch(err => console.log(err));
-    
-    //Reset all variables
-    setShouldAdd(false);
-    setShouldUpdate(false);
-    setPlantToUpdate({
-      name: "",
-      lastWatered: "",
-      frequency: 0,
-      lastFertilized: "",
-      imgUrl: ""
-    });
   }
  
   // Deletes a plant
   const deletePlant = (id) => {
 
     // First save a copy
-    axios.get('http://localhost:3000/plants/'+id)
+    axios.get(`http://localhost:3000/users/${userId}`)
       .then(res => {
-        setBackup({
-          name: res.data.name,
-          lastWatered: res.data.lastWatered,
-          frequency: res.data.frequency,
-          lastFertilized: res.data.lastFertilized,
-          imgUrl: res.data.imgUrl
+
+        for (let i = 0; i < res.data.plants.length; i++) {
+          if (res.data.plants[i]._id === id) {
+            setBackup({
+              name: res.data.plants[i].name,
+              lastWatered: res.data.plants[i].lastWatered,
+              frequency: res.data.plants[i].frequency,
+              lastFertilized: res.data.plants[i].lastFertilized,
+              imgUrl: res.data.plants[i].imgUrl
+            });
+          }
+        }
+
+        // Delete from database
+        const name = res.data.name;
+        const newPlants = res.data.plants.filter((item) => {
+          return item._id !== id;
+        })
+
+        axios.post(`http://localhost:3000/users/update/${userId}`, {
+          name: name,
+          plants: newPlants
         });
+
       })
       .catch(err => console.log('Error ' + err));
-
-    // Now delete the plant from the database, show undo button
-    axios.delete('http://localhost:3000/plants/'+id)
-
+    
+    // Take this out maybe? Test later when everything working
     setPlants(prev => {
       return prev.filter((item) => {
         return item._id !== id;
       });
     });
+
+    setShouldUpdate(false);
 
   }
 
@@ -119,12 +153,25 @@ const App = () => {
   const undoDelete = () => {
 
     // Post request using the backup plant
-    axios.post('http://localhost:3000/plants/add', backup)
-      .then(res => console.log(res.data))
-      
-    // Call add function
-    addPlant();
+    axios.get(`http://localhost:3000/users/${userId}`)
+      .then(res => {
+        // Push new plant into the array
+        const name = res.data.name;
+        const newPlants = res.data.plants;
+        newPlants.push(backup);
 
+        axios.post(`http://localhost:3000/users/update/${userId}`, {
+          name: name,
+          plants: newPlants
+        })
+          .then(() => {
+            addPlant();
+          })
+
+        console.log('Undid delete plant successfully!');
+      })
+      .catch(err => console.log(err));
+      
     // Reset undo states
     setShouldUndo(false);
     setBackup({
@@ -134,10 +181,14 @@ const App = () => {
       lastFertilized: "",
       imgUrl: ""
     });
+
+    // Call add function
+    addPlant();
   }
 
   // Function to show undo button after a delete
   const showUndo = () => {
+    setShouldUpdate(false);
     setShouldUndo(true);
   }
 
@@ -168,23 +219,29 @@ const App = () => {
   const queueUpdate = (id) => {
     setShouldAdd(false);
 
-    axios.get('http://localhost:3000/plants/'+id)
-      .then(foundPlant => {
+    // Pull user object from database
+    axios.get(`http://localhost:3000/users/${userId}`)
+      .then(res => {
 
-        // Need to convert dates to yyyy-mm-dd to show up properly in CreateArea component
-        let waterDate = new Date(foundPlant.data.lastWatered);
-        let waterString = `${waterDate.getUTCFullYear()}-${zeroFormat(waterDate.getUTCMonth()+1)}-${zeroFormat(waterDate.getUTCDate())}`;
+        for (let i = 0; i < res.data.plants.length; i++) {
+          if (res.data.plants[i]._id === id) {
 
-        let fertDate = new Date(foundPlant.data.lastFertilized);
-        let fertString = `${fertDate.getUTCFullYear()}-${zeroFormat(fertDate.getUTCMonth()+1)}-${zeroFormat(fertDate.getUTCDate())}`;
+            // Need to convert dates to yyyy-mm-dd to show up properly in CreateArea component
+            let waterDate = new Date(res.data.plants[i].lastWatered);
+            let waterString = `${waterDate.getUTCFullYear()}-${zeroFormat(waterDate.getUTCMonth()+1)}-${zeroFormat(waterDate.getUTCDate())}`;
 
-        setPlantToUpdate({
-          name: foundPlant.data.name,
-          lastWatered: waterString,
-          frequency: foundPlant.data.frequency,
-          lastFertilized: fertString,
-          imgUrl: foundPlant.data.imgUrl
-        });
+            let fertDate = new Date(res.data.plants[i].lastFertilized);
+            let fertString = `${fertDate.getUTCFullYear()}-${zeroFormat(fertDate.getUTCMonth()+1)}-${zeroFormat(fertDate.getUTCDate())}`;
+          
+            setPlantToUpdate({
+              name: res.data.plants[i].name,
+              lastWatered: waterString,
+              frequency: res.data.plants[i].frequency,
+              lastFertilized: fertString,
+              imgUrl: res.data.plants[i].imgUrl
+            });
+          }
+        }
         setShouldUpdate(true);
       })
       .catch(err => console.log(err));
@@ -195,14 +252,14 @@ const App = () => {
       <Header />
 
       <div>
-        {shouldAdd ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} onDelete={showUndo}/> : (shouldUpdate ? <CreateArea onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant} onDelete={showUndo}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
+        {shouldAdd ? <CreateArea userId={userId} onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} onDelete={showUndo}/> : (shouldUpdate ? <CreateArea userId={userId} onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant} onDelete={showUndo}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
       </div>
 
       {plants.map((plant) => {
         return (
           <Plant
-            key={plant.name}
-            id={plant.name}
+            key={plant._id}
+            id={plant._id}
             name={plant.name}
             lastWatered={plant.lastWatered}
             frequency={plant.frequency}

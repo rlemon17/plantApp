@@ -37,11 +37,26 @@ const CreateArea = (props) => {
 
   const cancelEdit = (event) => {
 
-    props.onAdd();
-
     // Add to the database
-    axios.post('http://localhost:3000/plants/add', backupPlant)
-      .then(res => console.log(res.data));
+    axios.get(`http://localhost:3000/users/${props.userId}`)
+      .then(res => {
+        // Push new plant into the array
+        const name = res.data.name;
+        const newPlants = res.data.plants;
+        newPlants.push(backupPlant);
+
+        axios.post(`http://localhost:3000/users/update/${props.userId}`, {
+          name: name,
+          plants: newPlants
+        })
+          .then(() => {
+            props.onAdd();
+          })
+
+        console.log('Plant RE-added successfully!')
+
+      })
+      .catch(err => console.log(err));
 
     // Reset form back to empty
     setPlant({
@@ -57,14 +72,28 @@ const CreateArea = (props) => {
   }
 
   const submitPlant = (event) => {
-    // Call onAdd method from App.jsx
-    props.onAdd();
-
+    
     // Add to the database
-    axios.post('http://localhost:3000/plants/add', plant)
-      .then(res => console.log(res.data));
+    axios.get(`http://localhost:3000/users/${props.userId}`)
+      .then(res => {
+        // Push new plant into the array
+        const name = res.data.name;
+        const newPlants = res.data.plants;
+        newPlants.push(plant);
 
-    // Reset form back to empty
+        axios.post(`http://localhost:3000/users/update/${props.userId}`, {
+          name: name,
+          plants: newPlants
+        })
+          .then(() => {
+            props.onAdd()
+          });
+
+        console.log('Plant added to user successfully!')
+      })
+      .catch(err => console.log(err));
+
+    // Reset form back to empty (TODO: I think we can take this out, test when everything is working)
     setPlant({
       name: "",
       lastWatered: "",
@@ -83,7 +112,6 @@ const CreateArea = (props) => {
   }
 
   const deletePlant = (event) => {
-    props.onAdd();
     props.onDelete();
     event.preventDefault();
   }
