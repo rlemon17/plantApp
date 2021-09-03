@@ -22,7 +22,7 @@ const RenderPlants = () => {
     let userDNE = true;
 
     // Update from database by grabbing user
-    axios.get(`http://localhost:3000/users`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users`)
       .then(usersArray => {
 
         // Find specific user
@@ -35,7 +35,7 @@ const RenderPlants = () => {
 
         // If didn't exist, send a post request
         if (userDNE) {
-          axios.post(`http://localhost:3000/users/add`, {
+          axios.post(`https://arcane-ravine-23754.herokuapp.com/users/add`, {
             name: username
           })
             .then(() => {
@@ -44,7 +44,7 @@ const RenderPlants = () => {
             })
         }
         
-        axios.get(`http://localhost:3000/users/${userId}`)
+        axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${userId}`)
           .then(res => {
             // Sort by watering date
             setPlants(res.data.plants.sort((a, b) => {
@@ -100,7 +100,7 @@ const RenderPlants = () => {
   const addPlant = () => {
 
     // Post request already made, just update state
-    axios.get(`http://localhost:3000/users/${userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${userId}`)
       .then(res => {
 
         // Sort by watering date
@@ -137,7 +137,7 @@ const RenderPlants = () => {
   const deletePlant = (id) => {
 
     // First save a copy
-    axios.get(`http://localhost:3000/users/${userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${userId}`)
       .then(res => {
 
         for (let i = 0; i < res.data.plants.length; i++) {
@@ -158,7 +158,7 @@ const RenderPlants = () => {
           return item._id !== id;
         })
 
-        axios.post(`http://localhost:3000/users/update/${userId}`, {
+        axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${userId}`, {
           name: name,
           plants: newPlants
         });
@@ -181,14 +181,14 @@ const RenderPlants = () => {
   const undoDelete = () => {
 
     // Post request using the backup plant
-    axios.get(`http://localhost:3000/users/${userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${userId}`)
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
         const newPlants = res.data.plants;
         newPlants.push(backup);
 
-        axios.post(`http://localhost:3000/users/update/${userId}`, {
+        axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${userId}`, {
           name: name,
           plants: newPlants
         })
@@ -247,7 +247,7 @@ const RenderPlants = () => {
     setShouldAdd(false);
 
     // Pull user object from database
-    axios.get(`http://localhost:3000/users/${userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${userId}`)
       .then(res => {
 
         for (let i = 0; i < res.data.plants.length; i++) {

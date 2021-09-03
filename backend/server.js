@@ -20,4 +20,8 @@ app.use('/users', userRouter);
 
 app.get("/", (req, res) => res.send("test"));
 
-app.listen(3000, () => console.log("Started on Port 3000"));
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port);

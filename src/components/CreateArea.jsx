@@ -38,14 +38,14 @@ const CreateArea = (props) => {
   const cancelEdit = (event) => {
 
     // Add to the database
-    axios.get(`http://localhost:3000/users/${props.userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${props.userId}`)
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
         const newPlants = res.data.plants;
         newPlants.push(backupPlant);
 
-        axios.post(`http://localhost:3000/users/update/${props.userId}`, {
+        axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${props.userId}`, {
           name: name,
           plants: newPlants
         })
@@ -74,14 +74,14 @@ const CreateArea = (props) => {
   const submitPlant = (event) => {
     
     // Add to the database
-    axios.get(`http://localhost:3000/users/${props.userId}`)
+    axios.get(`https://arcane-ravine-23754.herokuapp.com/users/${props.userId}`)
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
         const newPlants = res.data.plants;
         newPlants.push(plant);
 
-        axios.post(`http://localhost:3000/users/update/${props.userId}`, {
+        axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${props.userId}`, {
           name: name,
           plants: newPlants
         })
