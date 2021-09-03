@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
+import { Switch, BrowserRouter, Route, Link, useParams, useHistory } from 'react-router-dom';
 import Header from "./Header";
 import Footer from "./Footer";
 import Plant from "./Plant";
@@ -10,34 +10,60 @@ import axios from 'axios';
 const App = () => {
 
   const [plants, setPlants] = useState([]);
-
-  // Need a way to keep track of this
-  let userId = "612ea0f975e45715709199b0";
-  let userDNE = true;
-
+  const [userId, setUserId] = useState("");
+  
+  // Need a way to keep track of this without just declaring it
+  let username = "ryan";
+  
   useEffect(() => {
+
+    let userDNE = true;
+
     // Update from database by grabbing user
-    axios.get(`http://localhost:3000/users/${userId}`)
-      .then(res => {
+    axios.get(`http://localhost:3000/users`)
+      .then(usersArray => {
 
-        // Sort by watering date
-        setPlants(res.data.plants.sort((a, b) => {
-          const msPerDay = 1000*60*60*24;
+        // Find specific user
+        for (let i = 0; i < usersArray.data.length; i++) {
+          if (usersArray.data[i].name === username) {
+            userDNE = false;
+            setUserId(usersArray.data[i]._id);
+          }
+        }
 
-          let dateA = new Date(a.lastWatered);
-          let dateB = new Date(b.lastWatered);
+        // If didn't exist, send a post request
+        if (userDNE) {
+          axios.post(`http://localhost:3000/users/add`, {
+            name: username
+          })
+            .then(() => {
+              // Search again
+              setUserId("");
+            })
+        }
+        
+        axios.get(`http://localhost:3000/users/${userId}`)
+          .then(res => {
+            // Sort by watering date
+            setPlants(res.data.plants.sort((a, b) => {
+              const msPerDay = 1000*60*60*24;
 
-          let freqA = a.frequency*msPerDay;
-          let freqB = b.frequency*msPerDay;
+              let dateA = new Date(a.lastWatered);
+              let dateB = new Date(b.lastWatered);
 
-          let nextA = dateA.getTime() + freqA;
-          let nextB = dateB.getTime() + freqB
+              let freqA = a.frequency*msPerDay;
+              let freqB = b.frequency*msPerDay;
 
-          return nextA-nextB;
-        }));
+              let nextA = dateA.getTime() + freqA;
+              let nextB = dateB.getTime() + freqB
+
+              return nextA-nextB;
+            }));
+          })
+          .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
-  }, [])
+  }, [userId])
 
   // Various states to determine which functionality to use
   const [shouldAdd, setShouldAdd] = useState(false);
@@ -249,8 +275,16 @@ const App = () => {
 
   return (
     <div className="root-div">
-      <Header />
+      <Header user={username}/>
 
+      <BrowserRouter>
+        <Switch>
+          <Route path="/testing">
+            <p>TESTING</p>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+      
       <div>
         {shouldAdd ? <CreateArea userId={userId} onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={onCancel} onDelete={showUndo}/> : (shouldUpdate ? <CreateArea userId={userId} onAdd={addPlant} startingPlant={plantToUpdate} updateMode={shouldUpdate} onCancel={addPlant} onDelete={showUndo}/> : <button id="initialAdd" onClick={handleClick}>Add New Plant</button>)}
       </div>

@@ -1,9 +1,11 @@
 import React from "react";
 
-const Header = () => {
+const _ = require('lodash');
+
+const Header = (props) => {
   return (
     <header>
-      <h1>Ryan's Houseplants</h1>
+      <h1>{_.capitalize(props.user)}'s Houseplants</h1>
     </header>
   );
 }
