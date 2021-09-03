@@ -11,14 +11,16 @@ const Help = () => {
         <Header welcomeMode={true}/>
         <form id="help-page" className="create-plant">
             <h2>How to Use</h2>
-            <p>This web app helps you keep track of watering and fertilizing your houseplants!</p>
+            <p>This web app helps you keep track of watering and fertilizing your houseplants! You will be generated your own personal link after submitting a name/username, which you can re-visit
+                at any time to access your database. The site is also mobile-friendly :)
+            </p>
 
             <h2>Your Username</h2>
             <img className="help-img" alt="username" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240904258_240968484599178_168892069723026118_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=jIr8bJOtL8QAX_rSHJn&_nc_ht=scontent-lax3-2.xx&oh=f959ee808e6eabd3a963ec3079c0601f&oe=6159DB3C"/>
             <p>You can access your personal plant database by entering your name/username on the home page. Alternatively, you can
                 append "/username" to the URL. For example, you can view my plants by heading to "https://lemon-plantcare.herokuapp.com/ryan". This
                 will hopefully making bookmarking your personal link easier!</p>
-            <p>Note that anyone can access my plants using that link. Usernames are NOT unique by ip address, so be careful using a common name or username. Usernames are also NOT case-sensitive.</p>
+            <p>As a result, note that anyone can access my plants using that link. Usernames are NOT unique by ip address, so be careful using a common name or username. Usernames are also NOT case-sensitive.</p>
             <p>Please refrain from editing plant databases that aren't yours! This website will only be shared with my family and friends, so hopefully this shouldn't really be a problem :)</p>
             <p>(I will hopefully add passwords in the future to help solve all of this though!)</p>
 
@@ -70,7 +72,8 @@ const Help = () => {
                             <strong>Image URL</strong>
                         </div>
                         <div className="col-6">
-                            Copy and paste an image of your plant (currently URL links only)! For now you can use google images or upload a photo yourself to a photo sharing website. I'll hopefully add uploading photos in the future!
+                            <p>Copy and paste an image of your plant (currently URL links only)! You can use google images or upload a photo yourself to a photo sharing website, and using the link they provide you.</p>
+                            <p>A little trick I use is sending a photo to myself in Facebook messenger, and using that photo's link after it uploads. I'll hopefully add an uploading feature to this website soon though.</p>
                         </div>
                     </div>
                 </div>
@@ -99,7 +102,7 @@ const Help = () => {
              "undo delete" button will show up on the right of your page, under the add plant button. Clicking this will bring back the most recently deleted plant.</p>
 
             <h2>Contact Me!</h2>
-            <p>Please contact me for any bugs, feedback, questions, or suggestions you may have! I made this website entirely based on what I prioritize when taking care of plants,
+            <p>Please contact me for any bugs, feedback, questions, or suggestions you may have! I made this website entirely based on what I prioritize when taking care of my plants,
                 so it's super biased. Would love to hear from y'all and make this website more accessible!
             </p>
             <p>Thank you, and hope you enjoy our website :) - Ryan and Meelo</p>
