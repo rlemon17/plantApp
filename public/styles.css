@@ -8,25 +8,35 @@ html {
 }
 body {
   background: rgb(255, 255, 255);
-  background-image: url("https://www.transparenttextures.com/patterns/shattered-dark.png");
+  background-image: url("https://www.transparenttextures.com/patterns/shattered.png");
   padding: 0 16px;
 }
 
 header {
   background-color: #00A36C;
   margin: auto -16px;
-  padding: 16px 32px;
+  margin-bottom: 1rem;
+  padding: 16px 32px 0;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 header h1 {
+  position: relative;
+  top: 0.5rem;
   color: #fff;
   font-family: "McLaren", cursive;
   font-weight: 200;
 }
 
+h2 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  font-family: "McLaren", cursive;
+}
+
 footer {
-  position: fixed;
+  /* position: fixed; */
+  display: inline-block;
   text-align: center;
   bottom: 0;
   left: 0;
@@ -36,11 +46,21 @@ footer {
 }
 
 footer p {
-  color: #ccc;
+  padding-top: 3rem;
+  color: rgb(187, 187, 187);
 }
 
 label {
   display: block;
+}
+
+#login {
+  padding-top: 5rem;
+}
+
+#pixel {
+  text-align: center;
+  margin-bottom: -5rem;
 }
 
 #initialAdd {
@@ -50,9 +70,10 @@ label {
   color: #fff;
   display: block;
   font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
-  padding: 1rem 5rem;
-  position: relative;
+  font-size: 1rem;
+  padding: 1rem 1.7rem;
+  position: fixed;
+  right: 1%;
   margin: 2rem auto;
 }
 
@@ -69,8 +90,8 @@ label {
   font-family: "Montserrat", sans-serif;
   padding: 1rem;
   position: fixed;
-  bottom: 1%;
   right: 1%;
+  margin: 6rem auto;
 }
 
 #undo-btn:hover {
@@ -78,12 +99,52 @@ label {
   color: #00A36C;
 }
 
+#links {
+  font-family: "McLaren", cursive;
+  font-size: 1.3rem;
+  position: relative;
+  left: 85%;
+  top: -2.3rem;
+  max-width: 100px;
+}
+
+#home {
+  color: #fff;
+  padding: 0 1rem;
+}
+
+#help {
+  color: #fff;
+  padding: 0 1rem;
+}
+
+#help-page {
+  width: 60%;
+}
+
 .edit-btn {
   border-radius: 50%;
 }
 
+#username-btn {
+  padding: 0 1.5rem;
+  position: static;
+  width: auto;
+  border-radius: 5px;
+}
+
+#username-btn:hover {
+  background-color: #fff;
+  color: #00A36C;
+}
+
 .action.plant {
   background-color: #CDFED3;
+}
+
+.username-select {
+  background-color: #fff;
+  text-align: center;
 }
 
 form.create-plant button.cancel {
@@ -178,6 +239,21 @@ form.create-plant button.delete:hover {
 
 .action.plant button {
   background-color: #CDFED3;
+}
+
+.example-highlight {
+  background-color: #CDFED3;
+}
+
+.help-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width:400px;
+  max-height:400px;
+  width: auto;
+  height: auto;
+  padding-bottom: 1.5rem;
 }
 
 .plant button:hover {
