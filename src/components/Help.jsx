@@ -14,9 +14,9 @@ const Help = () => {
             <p>This web app helps you keep track of watering and fertilizing your houseplants!</p>
 
             <h2>Your Username</h2>
-            <img className="help-img" alt="username" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240590658_272337864452014_3130809675454548734_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=OAH5Pq5odGUAX8WnQjx&_nc_ht=scontent-lax3-2.xx&oh=06c1bf5c4dc706dd9077558e70a0717c&oe=61560A16"/>
+            <img className="help-img" alt="username" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240904258_240968484599178_168892069723026118_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=jIr8bJOtL8QAX_rSHJn&_nc_ht=scontent-lax3-2.xx&oh=f959ee808e6eabd3a963ec3079c0601f&oe=6159DB3C"/>
             <p>You can access your personal plant database by entering your name/username on the home page. Alternatively, you can
-                append "/username" to the URL. For example, you can view my plants by heading to "http://localhost:3000/ryan". This
+                append "/username" to the URL. For example, you can view my plants by heading to "https://lemon-plantcare.herokuapp.com/ryan". This
                 will hopefully making bookmarking your personal link easier!</p>
             <p>Note that anyone can access my plants using that link. Usernames are NOT unique by ip address, so be careful using a common name or username. Usernames are also NOT case-sensitive.</p>
             <p>Please refrain from editing plant databases that aren't yours! This website will only be shared with my family and friends, so hopefully this shouldn't really be a problem :)</p>
