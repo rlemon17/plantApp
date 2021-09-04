@@ -3,6 +3,7 @@ const plant = require('./plant.model.js');
 
 const userSchema = new mongoose.Schema({
     name: {type: String},
+    password: {type: String},
     plants: [plant.plantSchema]
 });
 

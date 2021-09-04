@@ -103,9 +103,14 @@ label {
   font-family: "McLaren", cursive;
   font-size: 1.3rem;
   position: relative;
-  left: 85%;
+  left: 72%;
   top: -2.3rem;
   max-width: 100px;
+}
+
+#myPlants {
+  color: #fff;
+  padding: 0 1rem;
 }
 
 #home {
@@ -126,12 +131,26 @@ label {
   border-radius: 50%;
 }
 
+#welcome-error {
+  color: red;
+}
+
 #username-btn {
   padding: 0 1.5rem;
+  margin: 1rem 1.5rem;
   position: static;
   width: auto;
   border-radius: 5px;
 }
+
+#username-btn2 {
+  padding: 0 1.5rem;
+  margin: 1rem 1.5rem;
+  position: static;
+  width: auto;
+  border-radius: 5px;
+}
+
 
 #username-btn:hover {
   background-color: #fff;

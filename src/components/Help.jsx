@@ -11,18 +11,18 @@ const Help = () => {
         <Header welcomeMode={true}/>
         <form id="help-page" className="create-plant">
             <h2>How to Use</h2>
-            <p>This web app helps you keep track of watering and fertilizing your houseplants! You will be generated your own personal link after submitting a name/username, which you can re-visit
-                at any time to access your database. The site is also mobile-friendly :)
+            <p>This web app helps you keep track of watering and fertilizing your houseplants! You will be generated your own personal link after registering an account: https://lemon-plantcare.herokuapp.com/(username). You can re-visit
+                this link at any time to access your database. This site is also mobile-friendly :)
             </p>
 
-            <h2>Your Username</h2>
+            <h2>Your Account</h2>
             <img className="help-img" alt="username" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240904258_240968484599178_168892069723026118_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=jIr8bJOtL8QAX_rSHJn&_nc_ht=scontent-lax3-2.xx&oh=f959ee808e6eabd3a963ec3079c0601f&oe=6159DB3C"/>
-            <p>You can access your personal plant database by entering your name/username on the home page. Alternatively, you can
-                append "/username" to the URL. For example, you can view my plants by heading to "https://lemon-plantcare.herokuapp.com/ryan". This
-                will hopefully making bookmarking your personal link easier!</p>
-            <p>As a result, note that anyone can access my plants using that link. Usernames are NOT unique by ip address, so be careful using a common name or username. Usernames are also NOT case-sensitive.</p>
-            <p>Please refrain from editing plant databases that aren't yours! This website will only be shared with my family and friends, so hopefully this shouldn't really be a problem :)</p>
-            <p>(I will hopefully add passwords in the future to help solve all of this though!)</p>
+            <p>You can access your personal plant database by registering an account and logging in on the home page. You can also
+                append "/username" to the home URL to access your page. For example, my database is accessed by going to "https://lemon-plantcare.herokuapp.com/ryan".</p>
+            <p>Usernames are NOT case-sensitive (but your passwords are!), and registering an account will fail if the username is already taken. Your accounts are stored in my
+                server, but I have encrypted your passwords so I cannot see them.
+            </p>
+            <p>You will stay logged in unless you restart your browser or click the logout button.</p>
 
             <h2>Adding a Plant</h2>
             <p>
@@ -82,8 +82,8 @@ const Help = () => {
             </p>
 
             <h2>Viewing your Plants</h2>
-            <img className="help-img" alt="viewing" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240394749_586341515708623_320653514617813320_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=WEyVkpmFX0MAX9lCDhh&_nc_ht=scontent-lax3-2.xx&oh=a71cd37912acea605798130d60879cd5&oe=61585722"/>
-            <p>After adding your plants, you will see them all rendered on your username page, displaying the data you entered.</p>
+            <img className="help-img" alt="viewing" src="https://scontent-lax3-1.xx.fbcdn.net/v/t1.15752-9/240498584_829969684379741_2430980187313985371_n.png?_nc_cat=104&ccb=1-5&_nc_sid=ae9488&_nc_ohc=CBVvUJXVFdAAX-sIECR&_nc_ht=scontent-lax3-1.xx&oh=386582fc69e7ceca400db0adcce3c9ba&oe=6157552C"/>
+            <p>After adding your plants, you will see them all rendered on your username page, or by clicking on "Plants" in the navbar.</p>
             <p>The website will determine the next date you should water each of your plants, and sort them in order of who needs watering first. Plants who need to be watered
                 will have a <span className="example-highlight">highlighted background</span>.
             </p>

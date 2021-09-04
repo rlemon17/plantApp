@@ -8,13 +8,19 @@ import axios from 'axios';
 
 const _ = require('lodash');
 
-const RenderPlants = () => {
+const RenderPlants = (props) => {
 
   const [plants, setPlants] = useState([]);
   const [userId, setUserId] = useState("");
   
   // Grab from URL
   let {username} = useParams();
+
+  // If already logged in, parameter wasn't grabbed
+  if (props.login) {
+    username = props.loggedUser;
+  }
+
   username = _.toLower(username);
   
   useEffect(() => {
@@ -36,7 +42,8 @@ const RenderPlants = () => {
         // If didn't exist, send a post request
         if (userDNE) {
           axios.post(`https://arcane-ravine-23754.herokuapp.com/users/add`, {
-            name: username
+            name: username,
+            password: props.userPass
           })
             .then(() => {
               // Search again
@@ -65,7 +72,7 @@ const RenderPlants = () => {
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
-  }, [username, userId])
+  }, [username, userId, props.userPass])
 
   // Various states to determine which functionality to use
   const [shouldAdd, setShouldAdd] = useState(false);
@@ -154,12 +161,14 @@ const RenderPlants = () => {
 
         // Delete from database
         const name = res.data.name;
+        const password = res.data.password;
         const newPlants = res.data.plants.filter((item) => {
           return item._id !== id;
         })
 
         axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${userId}`, {
           name: name,
+          password: password,
           plants: newPlants
         });
 
@@ -185,11 +194,13 @@ const RenderPlants = () => {
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
+        const password = res.data.password;
         const newPlants = res.data.plants;
         newPlants.push(backup);
 
         axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${userId}`, {
           name: name,
+          password: password,
           plants: newPlants
         })
           .then(() => {

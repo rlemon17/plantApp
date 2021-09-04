@@ -14,6 +14,7 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const newUser = new User({
         name: req.body.name,
+        password: req.body.password,
         plants: []
     });
 
@@ -38,6 +39,7 @@ router.route('/update/:id').post((req, res) => {
     User.findById(req.params.id)
         .then(foundUser => {
             foundUser.name = req.body.name;
+            foundUser.password = req.body.password;
             foundUser.plants = req.body.plants;
 
             foundUser.save()

@@ -42,11 +42,13 @@ const CreateArea = (props) => {
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
+        const password = res.data.password;
         const newPlants = res.data.plants;
         newPlants.push(backupPlant);
 
         axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${props.userId}`, {
           name: name,
+          password: password,
           plants: newPlants
         })
           .then(() => {
@@ -78,11 +80,13 @@ const CreateArea = (props) => {
       .then(res => {
         // Push new plant into the array
         const name = res.data.name;
+        const password = res.data.password;
         const newPlants = res.data.plants;
         newPlants.push(plant);
 
         axios.post(`https://arcane-ravine-23754.herokuapp.com/users/update/${props.userId}`, {
           name: name,
+          password: password,
           plants: newPlants
         })
           .then(() => {
