@@ -45,7 +45,7 @@ const Welcome = (props) => {
 
         // Find specific user
         for (let i = 0; i < usersArray.data.length; i++) {
-          if (usersArray.data[i].name === user.username) {
+          if (usersArray.data[i].name === _.toLower(user.username)) {
             userExist = true;
           }
         }
@@ -78,7 +78,7 @@ const Welcome = (props) => {
         for (let i = 0; i < usersArray.data.length; i++) {
 
           // If found, set to false for now
-          if (usersArray.data[i].name === user.username) {
+          if (usersArray.data[i].name === _.toLower(user.username)) {
             userDNE = false;
             
             // Now check their password
