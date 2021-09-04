@@ -157,6 +157,11 @@ label {
   color: #00A36C;
 }
 
+#username-btn2:hover {
+  background-color: #fff;
+  color: #00A36C;
+}
+
 .action.plant {
   background-color: #CDFED3;
 }
