@@ -16,7 +16,7 @@ const Help = () => {
             </p>
 
             <h2>Your Account</h2>
-            <img className="help-img" alt="username" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240904258_240968484599178_168892069723026118_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=jIr8bJOtL8QAX_rSHJn&_nc_ht=scontent-lax3-2.xx&oh=f959ee808e6eabd3a963ec3079c0601f&oe=6159DB3C"/>
+            <img className="help-img" alt="username" src="https://raw.githubusercontent.com/rlemon17/plantApp/main/public/photos/url.png"/>
             <p>You can access your personal plant database by registering an account and logging in on the home page. You can also
                 append "/username" to the home URL to access your page. For example, my database is accessed by going to "https://lemon-plantcare.herokuapp.com/ryan".</p>
             <p>Usernames are NOT case-sensitive (but your passwords are!), and registering an account will fail if the username is already taken. Your accounts are stored in my
@@ -26,7 +26,7 @@ const Help = () => {
 
             <h2>Adding a Plant</h2>
             <p>
-                <img className="help-img" alt="adding" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240385820_2132262993600444_1338834420261850684_n.png?_nc_cat=103&ccb=1-5&_nc_sid=ae9488&_nc_ohc=VQnxpKsh7lwAX_yioCf&_nc_ht=scontent-lax3-2.xx&oh=4bb17a9d00901bcb87cdc2d764e68ccf&oe=6157C7A7"/>
+                <img className="help-img" alt="adding" src="https://raw.githubusercontent.com/rlemon17/plantApp/main/public/photos/add.png"/>
                 You can add a plant at any time by clicking the "Add Plant" button on the right side of your page. It will then ask you for various fields:
             </p>
 
@@ -82,14 +82,14 @@ const Help = () => {
             </p>
 
             <h2>Viewing your Plants</h2>
-            <img className="help-img" alt="viewing" src="https://scontent-lax3-1.xx.fbcdn.net/v/t1.15752-9/240498584_829969684379741_2430980187313985371_n.png?_nc_cat=104&ccb=1-5&_nc_sid=ae9488&_nc_ohc=CBVvUJXVFdAAX-sIECR&_nc_ht=scontent-lax3-1.xx&oh=386582fc69e7ceca400db0adcce3c9ba&oe=6157552C"/>
+            <img className="help-img" alt="viewing" src="https://raw.githubusercontent.com/rlemon17/plantApp/main/public/photos/plantHome.png"/>
             <p>After adding your plants, you will see them all rendered on your username page, or by clicking on "Plants" in the navbar.</p>
             <p>The website will determine the next date you should water each of your plants, and sort them in order of who needs watering first. Plants who need to be watered
                 will have a <span className="example-highlight">highlighted background</span>.
             </p>
 
             <h2>Editing/Watering your Plants</h2>
-            <img className="help-img" alt="editing" src="https://scontent-lax3-1.xx.fbcdn.net/v/t1.15752-9/240444772_1991015924431725_6825209004022939751_n.png?_nc_cat=104&ccb=1-5&_nc_sid=ae9488&_nc_ohc=n5hHS51o2IwAX-iubl1&_nc_ht=scontent-lax3-1.xx&oh=6aa0e6ccf11a7507d7b4bc2168b0a28d&oe=615591CE"/>
+            <img className="help-img" alt="editing" src="https://raw.githubusercontent.com/rlemon17/plantApp/main/public/photos/plantEdit.png"/>
             <p>To edit any of your plants (if you just watered them, for example), you can update their data fields by clicking on the <EditIcon/> edit icon in the 
             bottom right corner of each plant.</p>
             <p>An interface will pop up, very similar to the interface when adding a plant. Update the fields as necessary, then click the <SaveIcon/> save icon.
@@ -97,7 +97,7 @@ const Help = () => {
 
             <h2>Deleting a Plant</h2>
             <p>In the editing interface of a plant, you can click on the <DeleteIcon/> delete icon to remove it from your page.</p> 
-            <img className="help-img" alt="deleting" src="https://scontent-lax3-2.xx.fbcdn.net/v/t1.15752-9/240396057_460083094975979_8010989265160620541_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=WAuU5gfTOHEAX-r0Zoq&_nc_ht=scontent-lax3-2.xx&oh=fb3a64c88048d68f1a1a814eb7448710&oe=6155791E"/>
+            <img className="help-img" alt="deleting" src="https://raw.githubusercontent.com/rlemon17/plantApp/main/public/photos/add.png"/>
             <p>If you made a mistake or changed your mind, a <strong>one-time </strong>
              "undo delete" button will show up on the right of your page, under the add plant button. Clicking this will bring back the most recently deleted plant.</p>
 
